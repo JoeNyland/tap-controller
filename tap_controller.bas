@@ -1,7 +1,5 @@
 #picaxe 18a
 
-; ToDo: Adjust taps if the temperature of the water reaches the selected temperature.
-
 ; Define output pins as symbols
 symbol BLUE_LED   = B.2         ; Blue LED.
 symbol AMBER_LED  = B.1         ; Amber LED.
@@ -16,8 +14,15 @@ symbol POTENTIOMETER  = C.1     ; Preset the temperature you would like the wate
 symbol START_BTN      = pin7    ; Start filling button.
 symbol STOP_BTN       = pin6    ; Stop filling button.
 
+; Store variables as symbols for easy reference
 symbol SELECTED_TEMP  = b1      ; Define the selected temperature as a symbol
 symbol CURRENT_TEMP   = b0      ; Define the current temperature as a symbol
+symbol FILLING        = b2      ; Store the state - filling or not?
+
+; Define servo (tap) positions as symbols
+symbol FULL           = 200
+symbol HALF           = 100
+symbol CLOSED         = 75
 
 init:
     gosub close_taps
@@ -26,35 +31,76 @@ main:
     readadc POTENTIOMETER,SELECTED_TEMP ; Get the selected temperature.
     readadc THERMISTOR,CURRENT_TEMP     ; Get the current water temperature.
 
-    if START_BTN = 1 then
-        sound PIEZO,(115,25,125,25)
+    if FILLING = 0 then
+        ; We're not currently filling
+
+        ; Check if we should start filling
+        if START_BTN = 1 then
+            sound PIEZO,(115,25,125,25)
+            select case SELECTED_TEMP
+                case < 040
+                    gosub cold_leds
+                    gosub open_cold_tap
+                case > 070
+                    gosub hot_leds
+                    gosub open_hot_tap
+                else
+                    gosub warm_leds
+                    gosub open_taps
+            endselect
+        end if
+        goto main
+    else
+        ; We're currently filling
+
+        ; Does the user want to stop filling?
+        if STOP_BTN = 1 then
+            sound PIEZO,(125,25,115,25)
+            gosub close_taps
+            gosub leds_off
+            goto main
+        end if
+
+        ; Monitor the water temperature and adjust the taps if need be
         select case SELECTED_TEMP
             case < 040
-                gosub cold_leds
-                gosub open_cold_tap
+                ; User wants cold water
+                ; We can't make the water any colder - the hot tap is off and cold on full
             case > 070
-                gosub hot_leds
-                gosub open_hot_tap
+                ; User wants hot water
+                ; We can't make the water any hotter - the cold tap is off and hot on full
             else
-                gosub warm_leds
-                gosub open_taps
+                ; User wants warn water
+                ; We need to make sure the water doesn't get too hot or too cold
+                select case CURRENT_TEMP
+                    ; case < 50
+                    case < 87
+                        ; Water has run cold
+                        servopos COLD_SERVO,HALF
+                        servopos HOT_SERVO,FULL
+                    ; case > 150
+                    case > 90
+                        ; The water is too hot
+                        servopos COLD_SERVO,FULL
+                        servopos HOT_SERVO,HALF
+                    else
+                        ; Water is within the 'warm' range
+                        ; We don't need to adjust the taps but we need to reset them both back to full on
+                        gosub open_taps
+                        goto main
+                endselect
         endselect
     end if
-
-    if STOP_BTN = 1 then
-        sound PIEZO,(125,25,115,25)
-        gosub close_taps
-        gosub leds_off
-    end if
-
     goto main
 
 open_cold_tap:
-    servopos 5,225
+    servopos COLD_SERVO,FULL
+    FILLING = 1
     return
 
 open_hot_tap:
-    servopos 4,225
+    servopos HOT_SERVO,FULL
+    FILLING = 1
     return
 
 open_taps:
@@ -63,8 +109,10 @@ open_taps:
     return
 
 close_taps:
-    servo COLD_SERVO,75
-    servo HOT_SERVO,75
+    servo COLD_SERVO,CLOSED
+    servo HOT_SERVO,CLOSED
+    FILLING = 0
+    return
     return
 
 cold_leds:

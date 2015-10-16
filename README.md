@@ -11,6 +11,8 @@ I recently found this model whilst clearing out at home.
 
 At the time of making this device (when I was working on my A Levels back in 2007-2009), the device was fully programmed, apart from the ability to detect the water temperature and adjust the taps accordingly. I no longer have access to the source code of the program that I wrote at that time, therefore I had to completely rewrite the program for the model, back up to the level of functionality that I left it in back in 2009. Hence, this repo was thrown together to store it for safe keeping.
 
+Now I have the program for this model completely rewritten, I decided that I would add the remaining functionality to the program. Now, this device is fully functional!
+
 ### I/O
 The following outlines which I/O pins are used for which component on the PCB.
 

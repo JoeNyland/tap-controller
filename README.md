@@ -6,6 +6,11 @@ I had to produce a model of a device that helped people with a physical disabili
 
 Obviously, this is purely a model of the device, showing the two taps either side and it provides sound confirmation and an LED confirmation of the selected temperature.
 
+###### Update 16/10/2015
+I recently found this model whilst clearing out at home.
+
+At the time of making this device (when I was working on my A Levels back in 2007-2009), the device was fully programmed, apart from the ability to detect the water temperature and adjust the taps accordingly. I no longer have access to the source code of the program that I wrote at that time, therefore I had to completely rewrite the program for the model, back up to the level of functionality that I left it in back in 2009. Hence, this repo was thrown together to store it for safe keeping.
+
 ### I/O
 The following outlines which I/O pins are used for which component on the PCB.
 

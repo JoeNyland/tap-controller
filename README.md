@@ -13,6 +13,9 @@ At the time of making this device (when I was working on my A Levels back in 200
 
 Now I have the program for this model completely rewritten, I decided that I would add the remaining functionality to the program. Now, this device is fully functional!
 
+### Demo
+![Demo gif](http://joenyland-assets.s3.amazonaws.com/tap_controller/demo.gif)
+
 ### I/O
 The following outlines which I/O pins are used for which component on the PCB.
 

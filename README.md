@@ -16,6 +16,14 @@ Now I have the program for this model completely rewritten, I decided that I wou
 ### Demo
 ![Demo gif](assets/demo.gif)
 
+### Installation
+
+macOS:
+```
+brew cask install caskroom/drivers/ftdi-vcp-driver
+brew cask install picaxe-compilers
+```
+
 ### I/O
 The following outlines which I/O pins are used for which component on the PCB.
 

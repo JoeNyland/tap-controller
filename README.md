@@ -14,7 +14,7 @@ At the time of making this device (when I was working on my A Levels back in 200
 Now I have the program for this model completely rewritten, I decided that I would add the remaining functionality to the program. Now, this device is fully functional!
 
 ### Demo
-![Demo gif](assets/demo.gif)
+![Demo gif](http://i.imgur.com/r72PUoY.gif)
 
 ### Installation
 

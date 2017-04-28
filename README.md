@@ -75,4 +75,4 @@ The following outlines which I/O pins are used for which component on the PCB.
 </table>
 
 ### Pinout
-![Pinout of a PICAXE18a chip](assets/pinout.png)
+![Pinout of a PICAXE18a chip](http://i.imgur.com/MJfYMKB.png)
